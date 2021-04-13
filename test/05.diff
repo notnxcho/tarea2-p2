@@ -1,0 +1,57 @@
+0a1,15
+> ==7392== Invalid read of size 8
+> ==7392==    at 0x10A845: esInicioCadena(nodoCadena*, _rep_cadena*) (cadena.cpp:85)
+> ==7392==    by 0x1096AB: main (principal.cpp:134)
+> ==7392==  Address 0x8 is not stack'd, malloc'd or (recently) free'd
+> ==7392== 
+> ==7392== 
+> ==7392== Process terminating with default action of signal 11 (SIGSEGV)
+> ==7392==  Access not within mapped region at address 0x8
+> ==7392==    at 0x10A845: esInicioCadena(nodoCadena*, _rep_cadena*) (cadena.cpp:85)
+> ==7392==    by 0x1096AB: main (principal.cpp:134)
+> ==7392==  If you believe this happened as a result of a stack
+> ==7392==  overflow in your program's main thread (unlikely but
+> ==7392==  possible), you can try to increase the size of the
+> ==7392==  main thread stack using the --main-stacksize= flag.
+> ==7392==  The main thread stack size used in this run was 8388608.
+5,41c20,21
+< 5>loc no es incio de cad.
+< 6>loc no es final de cad.
+< 7>loc al inicio.
+< 8>loc es incio de cad.
+< 9>loc es final de cad.
+< 10>loc al final.
+< 11>loc es incio de cad.
+< 12>loc es final de cad.
+< 13>Insertado al final.
+< 14>loc es incio de cad.
+< 15>loc no es final de cad.
+< 16>loc al final.
+< 17>loc no es incio de cad.
+< 18>loc es final de cad.
+< 19>Insertado al final.
+< 20>loc no es incio de cad.
+< 21>loc no es final de cad.
+< 22>loc al inicio.
+< 23>loc es incio de cad.
+< 24>loc no es final de cad.
+< 25>loc al anterior.
+< 26>loc no válido.
+< 27>loc al inicio.
+< 28>loc válido.
+< 29>loc es incio de cad.
+< 30>loc no es final de cad.
+< 31>loc al siguiente.
+< 32>loc válido.
+< 33>loc no es incio de cad.
+< 34>loc no es final de cad.
+< 35>loc al siguiente.
+< 36>loc válido.
+< 37>loc no es incio de cad.
+< 38>loc es final de cad.
+< 39>loc al siguiente.
+< 40>loc no válido.
+< 41>Fin.
+---
+> 5>timeout: the monitored command dumped core
+> Segmentation fault

@@ -30,6 +30,7 @@ void liberarCadena(TCadena cad) {
   while (cad->inicio) {
     TLocalizador borrar = cad->inicio;
     cad->inicio = cad->inicio->siguiente;
+    liberarInfo(borrar -> dato);
     delete borrar;
   }
   delete cad->final;
@@ -37,49 +38,50 @@ void liberarCadena(TCadena cad) {
 }
 
 bool esVaciaCadena(TCadena cad) {
-  return cad->inicio == NULL;
+  return !cad || cad->inicio == NULL;
 }
 
 TLocalizador inicioCadena(TCadena cad) {
-  /*
-  // versión que sigue la especificación
-    TLocalizador res;
-    if (esVaciaCadena(cad)) {
-      res = NULL;
-    } else {
-      res = cad->inicio;
-    }
-    return res;
-  */
-  
-  // versión conociendo la implementación:
-  // esVaciaCadena(cad) => cad->inicio == NUL
-  assert(!esVaciaCadena(cad));
-  return cad->inicio;
+  TLocalizador res;
+  if (esVaciaCadena(cad)) {
+    res = NULL;
+  } else {
+    res = cad->inicio;
+  }
+  return res;
 }
 
 TLocalizador finalCadena(TCadena cad) {
-  assert(!esVaciaCadena(cad));
-  return cad->final;
+  TLocalizador res;
+  if (esVaciaCadena(cad)) {
+    res = NULL;
+  } else {
+    res = cad->final;
+  }
+  return res;
 }
 
 TInfo infoCadena(TLocalizador loc, TCadena cad) {
+  assert(localizadorEnCadena(loc, cad));
   return loc->dato;
 }
 
 TLocalizador siguiente(TLocalizador loc, TCadena cad) {
+  assert(localizadorEnCadena(loc, cad));
   return loc->siguiente;
 }
 
 TLocalizador anterior(TLocalizador loc, TCadena cad) {
+  assert(localizadorEnCadena(loc, cad));
   return loc->anterior;
 }
 
 bool esFinalCadena(TLocalizador loc, TCadena cad) {
-  return loc->siguiente == NULL;
+  return (!esVaciaCadena(cad)) && (loc == finalCadena(cad));
 }
 
 bool esInicioCadena(TLocalizador loc, TCadena cad) {
+  if (esVaciaCadena(cad)) return false;
   return loc->anterior == NULL;
 }
 
@@ -91,6 +93,9 @@ TCadena insertarAlFinal(TInfo i, TCadena cad) {
   if (cad->final) {
     cad->final->siguiente = nuevoNodo;
   }
+  if (esVaciaCadena(cad)) {
+    cad->inicio = nuevoNodo;
+  }
   cad->final = nuevoNodo;
   return cad;
 }
@@ -100,9 +105,11 @@ TCadena insertarAntes(TInfo i, TLocalizador loc, TCadena cad) {
   nuevoNodo->dato = i;
   nuevoNodo->siguiente = loc;
   nuevoNodo->anterior = loc->anterior;
+  
   if (loc->anterior) {
     loc->anterior->siguiente = nuevoNodo;
   }
+
   loc->anterior = nuevoNodo;
   return cad;
 }
@@ -116,6 +123,8 @@ TCadena removerDeCadena(TLocalizador loc, TCadena cad) {
   }
   delete loc;
   loc = NULL;
+
+  return cad;
 }
 
 void imprimirCadena(TCadena cad) {
@@ -130,7 +139,7 @@ void imprimirCadena(TCadena cad) {
 TLocalizador kesimo(nat k, TCadena cad) {
   if (k<=0) return NULL;
   TLocalizador head = cad->inicio;
-  int contador = 1;
+  nat contador = 1;
   while (head != NULL && contador != k) {
     head = head->siguiente;
     contador++;
