@@ -1,0 +1,20 @@
+==26761== Invalid read of size 8
+==26761==    at 0x10B08B: siguienteClave(unsigned int, nodoCadena*, _rep_cadena*) (cadena.cpp:317)
+==26761==    by 0x10B652: cambiarTodos(unsigned int, unsigned int, _rep_cadena*) (usoTads.cpp:135)
+==26761==    by 0x10A14E: main (principal.cpp:277)
+==26761==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==26761== 
+==26761== 
+==26761== Process terminating with default action of signal 11 (SIGSEGV)
+==26761==  Access not within mapped region at address 0x0
+==26761==    at 0x10B08B: siguienteClave(unsigned int, nodoCadena*, _rep_cadena*) (cadena.cpp:317)
+==26761==    by 0x10B652: cambiarTodos(unsigned int, unsigned int, _rep_cadena*) (usoTads.cpp:135)
+==26761==    by 0x10A14E: main (principal.cpp:277)
+==26761==  If you believe this happened as a result of a stack
+==26761==  overflow in your program's main thread (unlikely but
+==26761==  possible), you can try to increase the size of the
+==26761==  main thread stack using the --main-stacksize= flag.
+==26761==  The main thread stack size used in this run was 8388608.
+1>#  Implementar cambiarTodos.
+2>timeout: the monitored command dumped core
+Segmentation fault

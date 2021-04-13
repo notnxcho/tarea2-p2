@@ -1,25 +1,32 @@
-==7371== Invalid read of size 8
-==7371==    at 0x10A796: infoCadena(nodoCadena*, _rep_cadena*) (cadena.cpp:66)
-==7371==    by 0x1095D8: main (principal.cpp:126)
-==7371==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
-==7371== 
-==7371== 
-==7371== Process terminating with default action of signal 11 (SIGSEGV)
-==7371==  Access not within mapped region at address 0x0
-==7371==    at 0x10A796: infoCadena(nodoCadena*, _rep_cadena*) (cadena.cpp:66)
-==7371==    by 0x1095D8: main (principal.cpp:126)
-==7371==  If you believe this happened as a result of a stack
-==7371==  overflow in your program's main thread (unlikely but
-==7371==  possible), you can try to increase the size of the
-==7371==  main thread stack using the --main-stacksize= flag.
-==7371==  The main thread stack size used in this run was 8388608.
 1>#  Implmentar insertarAntes.
 2>Insertado al final.
 3>loc al inicio.
 4>Insertado antes de loc.
 5>(5,2.80)
 6>loc al inicio.
-7>(5,2.80)
+7>(3,6.70)
 8>loc al siguiente.
-9>timeout: the monitored command dumped core
-Segmentation fault
+9>(5,2.80)
+10>Insertado antes de loc.
+11>(5,2.80)
+12>loc al inicio.
+13>(3,6.70)
+14>loc al siguiente.
+15>(4,3.10)
+16>Insertado antes de loc.
+17>(4,3.10)
+18>loc al inicio.
+19>(3,6.70)
+20>Insertado antes de loc.
+21>(3,6.70)
+22>loc al inicio.
+23>(1,7.20)
+24>loc al siguiente.
+25>(3,6.70)
+26>loc al siguiente.
+27>(8,2.90)
+28>loc al siguiente.
+29>(4,3.10)
+30>loc al siguiente.
+31>(5,2.80)
+32>Fin.

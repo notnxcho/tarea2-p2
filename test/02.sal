@@ -1,16 +1,3 @@
-==7364== Invalid free() / delete / delete[] / realloc()
-==7364==    at 0x483D1CF: operator delete(void*, unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7364==    by 0x10A6C4: liberarCadena(_rep_cadena*) (cadena.cpp:36)
-==7364==    by 0x10A24D: main (principal.cpp:303)
-==7364==  Address 0x4db25a0 is 0 bytes inside a block of size 24 free'd
-==7364==    at 0x483D1CF: operator delete(void*, unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7364==    by 0x10A6A8: liberarCadena(_rep_cadena*) (cadena.cpp:34)
-==7364==    by 0x10A24D: main (principal.cpp:303)
-==7364==  Block was alloc'd at
-==7364==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==7364==    by 0x10A86E: insertarAlFinal(_rep_info*, _rep_cadena*) (cadena.cpp:89)
-==7364==    by 0x1097A2: main (principal.cpp:147)
-==7364== 
 1>#  Implementar esVaciaCadena, esFinalCadena, infoCadena, siguiente, insertarAlFinal.
 2>cad vacia.
 3>loc no es final de cad.

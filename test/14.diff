@@ -1,0 +1,58 @@
+0a1,15
+> ==26680== Invalid read of size 8
+> ==26680==    at 0x10B08B: siguienteClave(unsigned int, nodoCadena*, _rep_cadena*) (cadena.cpp:317)
+> ==26680==    by 0x109D28: main (principal.cpp:219)
+> ==26680==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+> ==26680== 
+> ==26680== 
+> ==26680== Process terminating with default action of signal 11 (SIGSEGV)
+> ==26680==  Access not within mapped region at address 0x0
+> ==26680==    at 0x10B08B: siguienteClave(unsigned int, nodoCadena*, _rep_cadena*) (cadena.cpp:317)
+> ==26680==    by 0x109D28: main (principal.cpp:219)
+> ==26680==  If you believe this happened as a result of a stack
+> ==26680==  overflow in your program's main thread (unlikely but
+> ==26680==  possible), you can try to increase the size of the
+> ==26680==  main thread stack using the --main-stacksize= flag.
+> ==26680==  The main thread stack size used in this run was 8388608.
+2,39c17,18
+< 2>loc quedó no válido.
+< 3>Segmento insertado después de loc.
+< 4>loc al inicio.
+< 5>loc avanzó buscando 5.
+< 6>(5,3.40)
+< 7>loc avanzó buscando 8.
+< 8>(8,9.40)
+< 9>loc al inicio.
+< 10>loc avanzó buscando 6.
+< 11>(6,2.60)
+< 12>loc quedó no válido.
+< 13>loc no válido.
+< 14>loc al final.
+< 15>Segmento insertado después de loc.
+< 16>loc al inicio.
+< 17>loc al siguiente.
+< 18>loc avanzó buscando 5.
+< 19>(5,-3.20)
+< 20>loc al inicio.
+< 21>loc avanzó buscando 6.
+< 22>(6,2.60)
+< 23>loc avanzó buscando 6.
+< 24>(6,2.60)
+< 25>loc al siguiente.
+< 26>loc avanzó buscando 6.
+< 27>(6,-2.40)
+< 28>loc al final.
+< 29>loc retrocedió buscando 6.
+< 30>(6,-2.40)
+< 31>loc retrocedió buscando 8.
+< 32>(8,-9.20)
+< 33>loc retrocedió buscando 6.
+< 34>(6,2.60)
+< 35>loc retrocedió buscando 5.
+< 36>(5,3.40)
+< 37>loc quedó no válido.
+< 38>loc no válido.
+< 39>Fin.
+---
+> 2>timeout: the monitored command dumped core
+> Segmentation fault

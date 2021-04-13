@@ -33,7 +33,6 @@ void liberarCadena(TCadena cad) {
     liberarInfo(borrar -> dato);
     delete borrar;
   }
-  delete cad->final;
   delete cad;
 }
 
@@ -81,8 +80,7 @@ bool esFinalCadena(TLocalizador loc, TCadena cad) {
 }
 
 bool esInicioCadena(TLocalizador loc, TCadena cad) {
-  if (esVaciaCadena(cad)) return false;
-  return loc->anterior == NULL;
+  return (!esVaciaCadena(cad)) && (loc == inicioCadena(cad));
 }
 
 TCadena insertarAlFinal(TInfo i, TCadena cad) {
@@ -101,39 +99,77 @@ TCadena insertarAlFinal(TInfo i, TCadena cad) {
 }
 
 TCadena insertarAntes(TInfo i, TLocalizador loc, TCadena cad) {
+  assert(localizadorEnCadena(loc, cad));
   TLocalizador nuevoNodo = new nodoCadena;
   nuevoNodo->dato = i;
   nuevoNodo->siguiente = loc;
   nuevoNodo->anterior = loc->anterior;
   
-  if (loc->anterior) {
+  if (loc != inicioCadena(cad)) {
     loc->anterior->siguiente = nuevoNodo;
+  } else {
+    cad->inicio = nuevoNodo;
   }
-
   loc->anterior = nuevoNodo;
   return cad;
 }
-
-TCadena removerDeCadena(TLocalizador loc, TCadena cad) {
+/*
+TCadena removerDeCadena(TLocalizador loc, TCadena cad) {\
+  assert(localizadorEnCadena(loc, cad));
   if (loc->anterior) {
     loc->anterior->siguiente = loc->siguiente;
   }
   if (loc->siguiente) {
     loc->siguiente->anterior = loc->anterior;
   }
+  liberarInfo(loc -> dato);
   delete loc;
   loc = NULL;
+  return cad;
+}
+*/
 
+TCadena removerDeCadena(TLocalizador loc, TCadena cad) {
+  assert(localizadorEnCadena(loc, cad));
+  if (esInicioCadena(loc, cad)) {
+    if (esFinalCadena(loc, cad)) {
+      liberarInfo(loc->dato);
+      cad->inicio = NULL;
+      cad->final = NULL; 
+      delete loc;
+    }
+    else {
+      liberarInfo(loc->dato);
+      cad->inicio = loc->siguiente;
+      delete loc;
+    }
+  }
+  else if (esFinalCadena(loc, cad)) {
+    loc->anterior->siguiente = NULL;
+    liberarInfo(loc->dato);
+    cad->final = loc->anterior;
+    delete loc;
+  }
+  else {
+    TLocalizador aux = loc->anterior;
+    aux->siguiente = loc->siguiente;
+    loc->siguiente->anterior = aux;
+    liberarInfo(loc->dato);
+    delete loc;
+  } 
   return cad;
 }
 
+
 void imprimirCadena(TCadena cad) {
-  TLocalizador actual = cad->inicio;
+  TLocalizador actual = inicioCadena(cad);
   while (actual) {
-    /* printf (actual->dato.n); */
+    ArregloChars auxArray = infoATexto(infoCadena(actual, cad));
+    printf ("%s", auxArray);
+    delete [] auxArray;
     actual = actual->siguiente;
   }
-  /* printf endline; */
+  printf("\n");
 }
 
 TLocalizador kesimo(nat k, TCadena cad) {
@@ -148,35 +184,105 @@ TLocalizador kesimo(nat k, TCadena cad) {
 }
 
 TCadena insertarSegmentoDespues(TCadena sgm, TLocalizador loc, TCadena cad) {
-  loc->siguiente = sgm->inicio;
-  sgm->inicio->anterior = loc;
-  if (loc->siguiente) {
-    loc->siguiente->anterior = sgm->final;
+  assert(esVaciaCadena(cad) || localizadorEnCadena(loc, cad));
+
+  if (esVaciaCadena(cad)) {
+    cad->inicio = sgm->inicio;
+    cad->final = sgm->final;
+  } else if (!esVaciaCadena(sgm)) {
+    TLocalizador aux = loc->siguiente;
+    loc->siguiente = sgm->inicio;
+    sgm->inicio->anterior = loc;
+    if (!esFinalCadena(loc, cad)) {
+      loc->siguiente->anterior = sgm->final;
+      sgm->final->siguiente = aux;
+    } else {
+      sgm->final->siguiente = NULL;
+      cad->final = sgm->final;
+    }
   }
-  sgm->final->siguiente = loc->siguiente;
+  delete(sgm);
   return cad;
 }
 
 TCadena copiarSegmento(TLocalizador desde, TLocalizador hasta, TCadena cad) {
+  assert(esVaciaCadena(cad) || precedeEnCadena(desde, hasta, cad));
   TCadena resultado = crearCadena();
+  if (esVaciaCadena(cad)) {
+    resultado->inicio = NULL;
+    resultado->final = NULL;
+    return resultado;
+  }
   TLocalizador aux = desde;
   while (aux != hasta) {
-    insertarAlFinal(aux->dato, resultado);
+    insertarAlFinal(copiaInfo(aux->dato), resultado);
     aux = aux->siguiente;
   }
+  insertarAlFinal(copiaInfo(hasta->dato), resultado);
   return resultado;
 } 
 
+// TCadena borrarSegmento(TLocalizador desde, TLocalizador hasta, TCadena cad) {
+//   assert(esVaciaCadena(cad) || precedeEnCadena(desde, hasta, cad));
+//   TLocalizador head = desde;
+
+//   if (!esVaciaCadena(cad)){
+//     while (head != hasta) {
+//       liberarInfo(infoCadena(head, cad));
+//       head = head->siguiente;
+//     }
+//     liberarInfo(infoCadena(hasta, cad));
+
+//     if (!esInicioCadena(desde, cad)) {
+//       desde->anterior->siguiente = hasta->siguiente;
+//       if (!esFinalCadena(hasta, cad)) {
+//         hasta->siguiente->anterior = desde->anterior;
+//       } else {
+//         cad->final = desde->anterior;
+//       }
+//     } else {
+//       cad->inicio = hasta->siguiente;
+//     }
+//     if (desde) desde->anterior = NULL;
+//     if (hasta) hasta->siguiente = NULL;
+    
+//   }
+  
+//   if (hasta != head) delete(hasta);
+//   delete(head);
+//   return cad;
+// }
+
 TCadena borrarSegmento(TLocalizador desde, TLocalizador hasta, TCadena cad) {
-  TLocalizador aux = desde;
-  while (aux != hasta) {
-    removerDeCadena(aux, cad);
-    aux = aux->siguiente;
+  TCadena cadAux = crearCadena();
+  cadAux->inicio = desde;
+  cadAux->final = hasta;
+  cadAux->final->siguiente = NULL;
+  cadAux->inicio->anterior = NULL;
+  liberarCadena(cadAux);
+  if (esFinalCadena(hasta, cad)) { 
+    cad->final = desde->anterior;
+  } else {
+    hasta->siguiente->anterior = desde->anterior;
   }
+  if (esInicioCadena(desde, cad)) {
+    cad->inicio = hasta->siguiente;
+    if (esFinalCadena(hasta, cad)) {
+      cad->inicio = cad->final = NULL;
+    } else {
+      hasta->siguiente->anterior = NULL;
+      cad->inicio = hasta->siguiente;
+    }
+  } else {
+    desde->anterior->siguiente = hasta->siguiente;
+  }
+  delete(hasta);
+  delete(desde);
   return cad;
 }
 
 TCadena cambiarEnCadena(TInfo i, TLocalizador loc, TCadena cad) {
+  assert(localizadorEnCadena(loc, cad));
   loc->dato = i;
   return cad;
 }
@@ -189,18 +295,18 @@ TCadena intercambiar(TLocalizador loc1, TLocalizador loc2, TCadena cad) {
 }
 
 bool localizadorEnCadena(TLocalizador loc, TCadena cad) {
-  if (esVaciaCadena(cad)) return false;
-  TLocalizador aux = cad->inicio;
-  while (aux != loc || aux != NULL) {
+  if (esVaciaCadena(cad) || loc == NULL) return false;
+  TLocalizador aux = inicioCadena(cad);
+  while (aux != loc && aux != NULL) {
     aux = aux->siguiente;
   }
   return aux == loc;
 }
 
 bool precedeEnCadena(TLocalizador loc1, TLocalizador loc2, TCadena cad) {
-  if (esVaciaCadena(cad)) return false;
+  if (esVaciaCadena(cad) || loc2 == NULL) return false;
   TLocalizador aux = loc1;
-  while (aux != loc2 || aux != NULL) {
+  while (aux != loc2 && aux != NULL) {
     aux = aux->siguiente;
   }
   return aux == loc2;
